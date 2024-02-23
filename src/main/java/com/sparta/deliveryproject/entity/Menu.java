@@ -1,5 +1,6 @@
 package com.sparta.deliveryproject.entity;
 
+import com.sparta.deliveryproject.dto.MenuRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,4 +29,17 @@ public class Menu {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
+
+    public Menu(Store store, MenuRequestDto menuRequestDto) {
+        this.store = store;
+        this.name = menuRequestDto.getName();
+        this.price = menuRequestDto.getPrice();
+        this.introduce = menuRequestDto.getIntroduce();
+    }
+
+    public void update(MenuRequestDto menuRequestDto) {
+        this.name = menuRequestDto.getName();
+        this.price = menuRequestDto.getPrice();
+        this.introduce = menuRequestDto.getIntroduce();
+    }
 }
