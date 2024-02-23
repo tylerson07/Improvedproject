@@ -1,5 +1,6 @@
 package com.sparta.deliveryproject.entity;
 
+import com.sparta.deliveryproject.dto.StoreRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,9 +27,24 @@ public class Store {
     private String introduce;
 
     @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private CategoryEnum category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id", nullable = false)
+//    private User user;
+
+    public Store(StoreRequestDto storeRequestDto) {
+        this.name = storeRequestDto.getName();
+        this.address = storeRequestDto.getAddress();
+        this.introduce = storeRequestDto.getIntroduce();
+        this.category = CategoryEnum.valueOf(storeRequestDto.getCategory());
+    }
+
+    public void edit(StoreRequestDto storeRequestDto) {
+        this.name = storeRequestDto.getName();
+        this.address = storeRequestDto.getAddress();
+        this.introduce = storeRequestDto.getIntroduce();
+        this.category = CategoryEnum.valueOf(storeRequestDto.getCategory());
+    }
 }
