@@ -19,6 +19,10 @@ class MenuResponseDtoTest implements CommonTest {
         void createStoreRequestDto_success() {
             // given
             StoreRequestDto storeRequestDto = new StoreRequestDto();
+            storeRequestDto.setName(TEST_STORE_NAME);
+            storeRequestDto.setIntroduce(TEST_STORE_INTRODUCE);
+            storeRequestDto.setAddress(TEST_STORE_ADDRESS);
+            storeRequestDto.setCategory(TEST_STORE_CATEGORY);
 
             Store store = new Store(storeRequestDto);
 
