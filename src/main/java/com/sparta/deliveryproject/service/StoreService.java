@@ -47,10 +47,20 @@ public class StoreService {
                 () -> new NullPointerException("해당 id의 store가 존재하지 않습니다.")
         );
 
+        try {
+            CategoryEnum.valueOf(storeRequestDto.getCategory());
+        } catch (IllegalArgumentException e) {
+            throw new NotValidCategoryException("존재하지 않는 카테고리입니다.");
+        }
+
         store.edit(storeRequestDto);
     }
 
     public void deleteStore(Long id) {
-        storeRepository.deleteById(id);
+        Store store = storeRepository.findById(id).orElseThrow(
+                () -> new NullPointerException("해당 id의 store가 존재하지 않습니다.")
+        );
+
+        storeRepository.delete(store);
     }
 }

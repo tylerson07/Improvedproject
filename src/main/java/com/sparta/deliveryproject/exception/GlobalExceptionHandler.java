@@ -54,4 +54,15 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST
         );
     }
+
+    @ExceptionHandler({NullPointerException.class})
+    public ResponseEntity<CommonResponseDto> NullPointerExceptionHandler(NullPointerException e) {
+        CommonResponseDto commonResponseDto = new CommonResponseDto(400, e.getMessage());
+        return new ResponseEntity<>(
+                // HTTP body
+                commonResponseDto,
+                // HTTP status code
+                HttpStatus.BAD_REQUEST
+        );
+    }
 }
