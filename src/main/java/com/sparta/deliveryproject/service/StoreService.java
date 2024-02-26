@@ -4,6 +4,7 @@ import com.sparta.deliveryproject.dto.StoreRequestDto;
 import com.sparta.deliveryproject.dto.StoreResponseDto;
 import com.sparta.deliveryproject.entity.CategoryEnum;
 import com.sparta.deliveryproject.entity.Store;
+import com.sparta.deliveryproject.exception.NotValidCategoryException;
 import com.sparta.deliveryproject.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,12 @@ public class StoreService {
     }
 
     public void createStore(StoreRequestDto storeRequestDto) {
+        try {
+            CategoryEnum.valueOf(storeRequestDto.getCategory());
+        } catch (IllegalArgumentException e) {
+            throw new NotValidCategoryException("존재하지 않는 카테고리입니다.");
+        }
+
         Store store = new Store(storeRequestDto);
         storeRepository.save(store);
     }
