@@ -1,7 +1,6 @@
 package com.sparta.deliveryproject.entity;
 
 import com.sparta.deliveryproject.dto.OrderRequestDto;
-import com.sparta.deliveryproject.repository.OrderRepository;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,6 +39,11 @@ public class Orders {
 
     public void update(OrderRequestDto requestDto){
         this.quantity = requestDto.getQuantity();
+        this.totalPrice = menu.getPrice() * quantity;
+    }
+
+    public void add(OrderRequestDto requestDto) {
+        this.quantity += requestDto.getQuantity();
         this.totalPrice = menu.getPrice() * quantity;
     }
 }

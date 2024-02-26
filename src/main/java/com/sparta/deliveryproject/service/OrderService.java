@@ -23,11 +23,16 @@ public class OrderService {
         Menu menu = menuRepository.findById(menuId).orElseThrow(
                 () -> new NullPointerException("해당 id의 메뉴가 없습니다.")
         );
-        Orders orders = new Orders(menu, requestDto);
-        orderRepository.save(orders);
+
+        if(orderRepository.findByMenuId(menuId).isPresent()){
+            Orders orders = orderRepository.findByMenuId(menuId).orElseThrow();
+            orders.add(requestDto);
+        }else{
+            Orders orders = new Orders(menu, requestDto);
+            orderRepository.save(orders);
+        }
     }
 
-    @Transactional
     public OrderResponseDto getOrders() {
         List<Orders> ordersList = orderRepository.findAll();
         return new OrderResponseDto(ordersList);
