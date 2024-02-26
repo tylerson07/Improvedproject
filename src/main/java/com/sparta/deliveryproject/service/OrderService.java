@@ -23,6 +23,9 @@ public class OrderService {
         Menu menu = menuRepository.findById(menuId).orElseThrow(
                 () -> new NullPointerException("해당 id의 메뉴가 없습니다.")
         );
+        if(requestDto.getQuantity() <= 0){
+            throw new IllegalArgumentException("수량은 1개 이상이어야 합니다.");
+        }
 
         if(orderRepository.findByMenuId(menuId).isPresent()){
             Orders orders = orderRepository.findByMenuId(menuId).orElseThrow();
@@ -43,6 +46,9 @@ public class OrderService {
         Orders orders = orderRepository.findByMenuId(menuId).orElseThrow(
                 () -> new NullPointerException("해당 id의 메뉴가 장바구니에 없습니다.")
         );
+        if(requestDto.getQuantity() <= 0){
+            throw new IllegalArgumentException("수량은 1개 이상이어야 합니다.");
+        }
         orders.update(requestDto);
     }
 
