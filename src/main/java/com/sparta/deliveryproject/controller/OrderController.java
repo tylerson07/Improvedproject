@@ -45,5 +45,4 @@ public class OrderController {
         orderService.clearOrders();
         return ResponseEntity.status(200).body(new CommonResponseDto(200, "장바구니 비우기 성공"));
     }
-
 }
