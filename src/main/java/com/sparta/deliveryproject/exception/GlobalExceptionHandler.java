@@ -43,4 +43,15 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST
         );
     }
+
+    @ExceptionHandler({IllegalArgumentException.class})
+    public ResponseEntity<CommonResponseDto> IllegalArgumentExceptionHandler(IllegalArgumentException e) {
+        CommonResponseDto commonResponseDto = new CommonResponseDto(400, e.getMessage());
+        return new ResponseEntity<>(
+                // HTTP body
+                commonResponseDto,
+                // HTTP status code
+                HttpStatus.BAD_REQUEST
+        );
+    }
 }
