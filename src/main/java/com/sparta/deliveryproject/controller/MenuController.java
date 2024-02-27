@@ -6,6 +6,7 @@ import com.sparta.deliveryproject.service.MenuService;
 import com.sparta.deliveryproject.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 public class MenuController {
     private final MenuService menuService;
 
+    @Secured("ENTRE")
     @GetMapping("/{storeId}")
     public ResponseEntity<List<MenuResponseDto>> getMenuListByStore(@PathVariable Long storeId) {
         List<MenuResponseDto> menuList = menuService.getMenuListByStore(storeId);
