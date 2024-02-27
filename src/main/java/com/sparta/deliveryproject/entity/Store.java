@@ -30,15 +30,23 @@ public class Store {
     @Enumerated(value = EnumType.STRING)
     private CategoryEnum category;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id", nullable = false)
-//    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     public Store(StoreRequestDto storeRequestDto) {
         this.name = storeRequestDto.getName();
         this.address = storeRequestDto.getAddress();
         this.introduce = storeRequestDto.getIntroduce();
         this.category = CategoryEnum.valueOf(storeRequestDto.getCategory());
+    }
+
+    public Store(StoreRequestDto storeRequestDto, User user) {
+        this.name = storeRequestDto.getName();
+        this.address = storeRequestDto.getAddress();
+        this.introduce = storeRequestDto.getIntroduce();
+        this.category = CategoryEnum.valueOf(storeRequestDto.getCategory());
+        this.user = user;
     }
 
     public void edit(StoreRequestDto storeRequestDto) {
