@@ -1,4 +1,4 @@
-package com.sparta.deliveryproject.entity;
-
-public class UserRoleEnum {
-}
+//package com.sparta.deliveryproject.entity;
+//
+//public enum UserRoleEnum {
+//}

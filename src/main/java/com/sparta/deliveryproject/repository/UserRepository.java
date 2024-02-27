@@ -1,4 +1,4 @@
-package com.sparta.deliveryproject.repository;
-
-public class UserRepository {
-}
+//package com.sparta.deliveryproject.repository;
+//
+//public class UserRepository {
+//}
