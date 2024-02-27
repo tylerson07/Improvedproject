@@ -27,14 +27,15 @@ public class Orders {
     @JoinColumn(name = "menu_id", nullable = false)
     private Menu menu;
 
-    //    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id", nullable = false)
-//    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    public Orders(Menu menu, OrderRequestDto requestDto){
+    public Orders(Menu menu, OrderRequestDto requestDto, User user){
         this.quantity = requestDto.getQuantity();
         this.totalPrice = menu.getPrice() * quantity;
         this.menu = menu;
+        this.user = user;
     }
 
     public void update(OrderRequestDto requestDto){

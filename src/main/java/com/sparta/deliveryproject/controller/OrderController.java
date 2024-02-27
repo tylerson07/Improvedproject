@@ -4,9 +4,15 @@ import com.sparta.deliveryproject.dto.CommonResponseDto;
 import com.sparta.deliveryproject.dto.OrderRequestDto;
 import com.sparta.deliveryproject.dto.OrderResponseDto;
 import com.sparta.deliveryproject.entity.Orders;
+import com.sparta.deliveryproject.entity.User;
+import com.sparta.deliveryproject.security.UserDetailsImpl;
+import com.sparta.deliveryproject.service.JwtUtil;
 import com.sparta.deliveryproject.service.OrderService;
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +22,7 @@ import java.util.List;
 @RequestMapping("/api/orders")
 public class OrderController {
     private final OrderService orderService;
+    private final JwtUtil jwtUtil;
 
     @GetMapping()
     public ResponseEntity<OrderResponseDto> getOrders(){
@@ -23,8 +30,11 @@ public class OrderController {
         return ResponseEntity.status(200).body(responseDto);
     }
     @PostMapping("/{menuId}")
-    public ResponseEntity<CommonResponseDto> createOrders(@PathVariable Long menuId, @RequestBody OrderRequestDto requestDto){
-        orderService.createOrders(menuId, requestDto);
+    public ResponseEntity<CommonResponseDto> createOrders(@PathVariable Long menuId, @RequestBody OrderRequestDto requestDto, HttpServletRequest request){
+        String token = jwtUtil.getTokenFromRequest(request);
+        Claims userInfo = jwtUtil.getUserInfoFromToken(token);
+        userInfo.getId()
+        orderService.createOrders(menuId, requestDto, user);
         return ResponseEntity.status(200).body(new CommonResponseDto(200, "장바구니 등록 성공"));
     }
 

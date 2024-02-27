@@ -4,6 +4,7 @@ import com.sparta.deliveryproject.dto.OrderRequestDto;
 import com.sparta.deliveryproject.dto.OrderResponseDto;
 import com.sparta.deliveryproject.entity.Menu;
 import com.sparta.deliveryproject.entity.Orders;
+import com.sparta.deliveryproject.entity.User;
 import com.sparta.deliveryproject.repository.MenuRepository;
 import com.sparta.deliveryproject.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     @Transactional
-    public void createOrders(Long menuId, OrderRequestDto requestDto) {
+    public void createOrders(Long menuId, OrderRequestDto requestDto, User user) {
         Menu menu = menuRepository.findById(menuId).orElseThrow(
                 () -> new NullPointerException("해당 id의 메뉴가 없습니다.")
         );
@@ -31,7 +32,7 @@ public class OrderService {
             Orders orders = orderRepository.findByMenuId(menuId).orElseThrow();
             orders.add(requestDto);
         }else{
-            Orders orders = new Orders(menu, requestDto);
+            Orders orders = new Orders(menu, requestDto, user);
             orderRepository.save(orders);
         }
     }
