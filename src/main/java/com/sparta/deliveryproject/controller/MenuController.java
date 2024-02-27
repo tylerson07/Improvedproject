@@ -1,13 +1,14 @@
 package com.sparta.deliveryproject.controller;
 
-import com.sparta.deliveryproject.dto.CommonResponseDto;
-import com.sparta.deliveryproject.dto.MenuRequestDto;
-import com.sparta.deliveryproject.dto.MenuResponseDto;
+import com.sparta.deliveryproject.dto.*;
+import com.sparta.deliveryproject.entity.CategoryEnum;
 import com.sparta.deliveryproject.exception.DuplicatedMenuException;
 import com.sparta.deliveryproject.security.UserDetailsImpl;
 import com.sparta.deliveryproject.service.MenuService;
+import com.sparta.deliveryproject.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import java.util.List;
 public class MenuController {
     private final MenuService menuService;
 
+    @Secured("ENTRE")
     @GetMapping("/{storeId}")
     public ResponseEntity<List<MenuResponseDto>> getMenuListByStore(@PathVariable Long storeId) {
         List<MenuResponseDto> menuList = menuService.getMenuListByStore(storeId);
