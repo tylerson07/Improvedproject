@@ -4,9 +4,11 @@ import com.sparta.deliveryproject.dto.CommonResponseDto;
 import com.sparta.deliveryproject.dto.MenuRequestDto;
 import com.sparta.deliveryproject.dto.MenuResponseDto;
 import com.sparta.deliveryproject.exception.DuplicatedMenuException;
+import com.sparta.deliveryproject.security.UserDetailsImpl;
 import com.sparta.deliveryproject.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,20 +26,20 @@ public class MenuController {
     }
 
     @PostMapping("/{storeId}")
-    public ResponseEntity<CommonResponseDto> createMenu(@PathVariable Long storeId, @RequestBody MenuRequestDto menuRequestDto) throws DuplicatedMenuException {
-        menuService.createMenu(storeId, menuRequestDto);
+    public ResponseEntity<CommonResponseDto> createMenu(@PathVariable Long storeId, @RequestBody MenuRequestDto menuRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws DuplicatedMenuException {
+        menuService.createMenu(storeId, menuRequestDto, userDetails.getUser());
         return ResponseEntity.status(200).body(new CommonResponseDto(200, "메뉴 등록 성공"));
     }
 
     @PutMapping("/{menuId}")
-    public ResponseEntity<CommonResponseDto> editMenu(@PathVariable Long menuId, @RequestBody MenuRequestDto menuRequestDto) throws DuplicatedMenuException {
-        menuService.editMenu(menuId, menuRequestDto);
+    public ResponseEntity<CommonResponseDto> editMenu(@PathVariable Long menuId, @RequestBody MenuRequestDto menuRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws DuplicatedMenuException {
+        menuService.editMenu(menuId, menuRequestDto, userDetails.getUser());
         return ResponseEntity.status(200).body(new CommonResponseDto(200, "메뉴 수정 성공"));
     }
 
     @DeleteMapping("/{menuId}")
-    public ResponseEntity<CommonResponseDto> deleteStore(@PathVariable Long menuId) {
-        menuService.deleteMenu(menuId);
+    public ResponseEntity<CommonResponseDto> deleteStore(@PathVariable Long menuId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        menuService.deleteMenu(menuId, userDetails.getUser());
         return ResponseEntity.status(200).body(new CommonResponseDto(200, "메뉴 삭제 성공"));
     }
 }

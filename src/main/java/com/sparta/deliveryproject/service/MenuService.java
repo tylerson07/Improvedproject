@@ -5,6 +5,7 @@ import com.sparta.deliveryproject.dto.MenuRequestDto;
 import com.sparta.deliveryproject.dto.MenuResponseDto;
 import com.sparta.deliveryproject.entity.Menu;
 import com.sparta.deliveryproject.entity.Store;
+import com.sparta.deliveryproject.entity.User;
 import com.sparta.deliveryproject.exception.DuplicatedMenuException;
 import com.sparta.deliveryproject.repository.MenuRepository;
 import com.sparta.deliveryproject.repository.StoreRepository;
@@ -36,10 +37,14 @@ public class MenuService {
         return menuList.stream().map(MenuResponseDto::new).toList();
     }
 
-    public void createMenu(Long storeId, MenuRequestDto menuRequestDto) throws DuplicatedMenuException {
+    public void createMenu(Long storeId, MenuRequestDto menuRequestDto, User userDetails) throws DuplicatedMenuException {
         Store store = storeRepository.findById(storeId).orElseThrow(
                 () -> new NullPointerException("해당 id의 매장이 없습니다.")
         );
+
+        if(!store.getUser().getUserID().equals(userDetails.getUserID())){
+            throw new IllegalArgumentException("메뉴를 생성할 수 있는 권한이 없습니다.");
+        }
 
         List<Menu> menuList = menuRepository.findAllByStore(store);
 
@@ -58,7 +63,7 @@ public class MenuService {
         }
     }
 
-    public void editMenu(Long menuId, MenuRequestDto menuRequestDto) throws DuplicatedMenuException {
+    public void editMenu(Long menuId, MenuRequestDto menuRequestDto, User userDetails) throws DuplicatedMenuException {
         Menu menu = menuRepository.findById(menuId).orElseThrow(
                 () -> new NullPointerException("해당 id의 메뉴가 없습니다.")
         );
@@ -66,6 +71,10 @@ public class MenuService {
         Store store = storeRepository.findById(menu.getStore().getId()).orElseThrow(
                 () -> new NullPointerException("해당 id의 매장이 없습니다.")
         );
+
+        if(!store.getUser().getUserID().equals(userDetails.getUserID())){
+            throw new IllegalArgumentException("메뉴를 생성할 수 있는 권한이 없습니다.");
+        }
 
         List<Menu> menuList = menuRepository.findAllByStore(store);
 
@@ -83,10 +92,18 @@ public class MenuService {
         }
     }
 
-    public void deleteMenu(Long menuId) {
+    public void deleteMenu(Long menuId, User userDetails) {
         Menu menu = menuRepository.findById(menuId).orElseThrow(
                 () -> new NullPointerException("해당 id의 메뉴가 없습니다.")
         );
+
+        Store store = storeRepository.findById(menu.getStore().getId()).orElseThrow(
+                () -> new NullPointerException("해당 id의 매장이 없습니다.")
+        );
+
+        if(!store.getUser().getUserID().equals(userDetails.getUserID())){
+            throw new IllegalArgumentException("메뉴를 생성할 수 있는 권한이 없습니다.");
+        }
         menuRepository.delete(menu);
     }
 }
