@@ -50,7 +50,7 @@ public class UserController {
 
         }
 
-    @Secured("ENTRE")
+@Secured("ENTRE")
     @GetMapping(path ="/entre")
     public String Hello(){
         return "hello";

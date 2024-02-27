@@ -7,6 +7,7 @@ import com.sparta.deliveryproject.entity.CategoryEnum;
 import com.sparta.deliveryproject.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class StoreController {
     }
 
     // 매장 등록
+    @Secured("ADMIN")
     @PostMapping()
     public ResponseEntity<CommonResponseDto> createStore(@RequestBody StoreRequestDto storeRequestDto) {
         storeService.createStore(storeRequestDto);
@@ -33,6 +35,7 @@ public class StoreController {
     }
 
     // 매장 수정
+    @Secured("ADMIN")
     @PutMapping("/{storeId}")
     public ResponseEntity<CommonResponseDto> editStore(@PathVariable Long storeId, @RequestBody StoreRequestDto storeRequestDto) {
         storeService.editStore(storeId, storeRequestDto);
@@ -40,6 +43,7 @@ public class StoreController {
     }
 
     // 매장 삭제
+    @Secured("ADMIN")
     @DeleteMapping("/{storeId}")
     public ResponseEntity<CommonResponseDto> deleteStore(@PathVariable Long storeId) {
         storeService.deleteStore(storeId);
