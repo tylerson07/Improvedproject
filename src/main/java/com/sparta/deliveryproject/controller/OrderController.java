@@ -1,5 +1,6 @@
 package com.sparta.deliveryproject.controller;
 
+import com.sparta.deliveryproject.annotation.CurrentUser;
 import com.sparta.deliveryproject.dto.CommonResponseDto;
 import com.sparta.deliveryproject.dto.OrderRequestDto;
 import com.sparta.deliveryproject.dto.OrderResponseDto;
@@ -30,10 +31,8 @@ public class OrderController {
         return ResponseEntity.status(200).body(responseDto);
     }
     @PostMapping("/{menuId}")
-    public ResponseEntity<CommonResponseDto> createOrders(@PathVariable Long menuId, @RequestBody OrderRequestDto requestDto, HttpServletRequest request){
-        String token = jwtUtil.getTokenFromRequest(request);
-        Claims userInfo = jwtUtil.getUserInfoFromToken(token);
-        userInfo.getId()
+    public ResponseEntity<CommonResponseDto> createOrders(@PathVariable Long menuId, @RequestBody OrderRequestDto requestDto, @CurrentUser User user){
+
         orderService.createOrders(menuId, requestDto, user);
         return ResponseEntity.status(200).body(new CommonResponseDto(200, "장바구니 등록 성공"));
     }
