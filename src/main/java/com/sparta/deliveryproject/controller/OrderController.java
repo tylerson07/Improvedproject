@@ -26,32 +26,33 @@ public class OrderController {
     private final JwtUtil jwtUtil;
 
     @GetMapping()
-    public ResponseEntity<OrderResponseDto> getOrders(){
-        OrderResponseDto responseDto = orderService.getOrders();
+    public ResponseEntity<OrderResponseDto> getOrders(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        OrderResponseDto responseDto = orderService.getOrders(userDetails.getUser());
         return ResponseEntity.status(200).body(responseDto);
     }
     @PostMapping("/{menuId}")
-    public ResponseEntity<CommonResponseDto> createOrders(@PathVariable Long menuId, @RequestBody OrderRequestDto requestDto, @CurrentUser User user){
+    public ResponseEntity<CommonResponseDto> createOrders(@PathVariable Long menuId, @RequestBody OrderRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
 
-        orderService.createOrders(menuId, requestDto, user);
+        orderService.createOrders(menuId, requestDto, userDetails.getUser());
         return ResponseEntity.status(200).body(new CommonResponseDto(200, "장바구니 등록 성공"));
     }
 
     @PutMapping("/{menuId}")
-    public ResponseEntity<CommonResponseDto> updateOrders(@PathVariable Long menuId, @RequestBody OrderRequestDto requestDto){
-        orderService.updateOrders(menuId, requestDto);
+    public ResponseEntity<CommonResponseDto> updateOrders(@PathVariable Long menuId, @RequestBody OrderRequestDto requestDto,
+                                                          @AuthenticationPrincipal UserDetailsImpl userDetails){
+        orderService.updateOrders(menuId, requestDto, userDetails.getUser());
         return ResponseEntity.status(200).body(new CommonResponseDto(200, "장바구니 메뉴 수정 성공"));
     }
 
     @DeleteMapping("/{menuId}")
-    public ResponseEntity<CommonResponseDto> deleteOrders(@PathVariable Long menuId){
-        orderService.deleteOrders(menuId);
+    public ResponseEntity<CommonResponseDto> deleteOrders(@PathVariable Long menuId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        orderService.deleteOrders(menuId, userDetails.getUser());
         return ResponseEntity.status(200).body(new CommonResponseDto(200, "장바구니 메뉴 삭제 성공"));
     }
 
     @DeleteMapping()
-    public ResponseEntity<CommonResponseDto> clearOrders(){
-        orderService.clearOrders();
+    public ResponseEntity<CommonResponseDto> clearOrders(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        orderService.clearOrders(userDetails.getUser());
         return ResponseEntity.status(200).body(new CommonResponseDto(200, "장바구니 비우기 성공"));
     }
 }
