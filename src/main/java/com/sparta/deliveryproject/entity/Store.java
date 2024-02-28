@@ -26,13 +26,13 @@ public class Store {
     @Column(nullable = false)
     private String introduce;
 
-    @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private CategoryEnum category;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     @Column(nullable = false)
     private Long orderCount = 0L;
@@ -41,26 +41,26 @@ public class Store {
     private Long totalSales = 0L;
 
 
-    public Store(StoreRequestDto storeRequestDto) {
+    public Store(StoreRequestDto storeRequestDto, Category category) {
         this.name = storeRequestDto.getName();
         this.address = storeRequestDto.getAddress();
         this.introduce = storeRequestDto.getIntroduce();
-        this.category = CategoryEnum.valueOf(storeRequestDto.getCategory());
+        this.category = category;
     }
 
-    public Store(StoreRequestDto storeRequestDto, User user) {
+    public Store(StoreRequestDto storeRequestDto, Category category, User user) {
         this.name = storeRequestDto.getName();
         this.address = storeRequestDto.getAddress();
         this.introduce = storeRequestDto.getIntroduce();
-        this.category = CategoryEnum.valueOf(storeRequestDto.getCategory());
+        this.category = category;
         this.user = user;
     }
 
-    public void edit(StoreRequestDto storeRequestDto) {
+    public void edit(StoreRequestDto storeRequestDto, Category category) {
         this.name = storeRequestDto.getName();
         this.address = storeRequestDto.getAddress();
         this.introduce = storeRequestDto.getIntroduce();
-        this.category = CategoryEnum.valueOf(storeRequestDto.getCategory());
+        this.category = category;
     }
     public void incrementSales(Long totalPrice){
         this.orderCount ++;

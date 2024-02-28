@@ -3,7 +3,6 @@ package com.sparta.deliveryproject.controller;
 import com.sparta.deliveryproject.dto.CommonResponseDto;
 import com.sparta.deliveryproject.dto.StoreRequestDto;
 import com.sparta.deliveryproject.dto.StoreResponseDto;
-import com.sparta.deliveryproject.entity.CategoryEnum;
 import com.sparta.deliveryproject.security.UserDetailsImpl;
 import com.sparta.deliveryproject.service.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +21,9 @@ public class StoreController {
     private final StoreService storeService;
 
     // 카테고리별 메장 조회
-    @GetMapping("category/{category}")
-    public ResponseEntity<List<StoreResponseDto>> getStoreListByCategory(@PathVariable CategoryEnum category) {
-        List<StoreResponseDto> storeList = storeService.getStoreListByCategory(category);
+    @GetMapping("category/{categoryName}")
+    public ResponseEntity<List<StoreResponseDto>> getStoreListByCategory(@PathVariable String categoryName) {
+        List<StoreResponseDto> storeList = storeService.getStoreListByCategory(categoryName);
         return ResponseEntity.status(200).body(storeList);
     }
 

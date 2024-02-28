@@ -4,6 +4,7 @@ import com.sparta.deliveryproject.dto.StoreRequestDto;
 import com.sparta.deliveryproject.entity.Store;
 import com.sparta.deliveryproject.entity.User;
 import com.sparta.deliveryproject.entity.UserRoleEnum;
+import com.sparta.deliveryproject.repository.CategoryRepository;
 import com.sparta.deliveryproject.repository.StoreRepository;
 import com.sparta.deliveryproject.security.UserDetailsImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +16,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,6 +25,9 @@ class StoreServiceTest {
 
     @Mock
     StoreRepository storeRepository;
+
+    @Mock
+    CategoryRepository categoryRepository;
 
     private UserDetailsImpl UserAdminSetup() {
         String username = "testUserAdmin";
@@ -34,6 +40,7 @@ class StoreServiceTest {
     }
 
     @Nested
+    @DisplayName("createStore 테스트")
     class createStoreTest {
 
         @Test
@@ -47,9 +54,7 @@ class StoreServiceTest {
             storeRequestDto.setAddress("서울시 광진구");
             storeRequestDto.setName("시옌");
 
-            Store store = new Store(storeRequestDto, userDetails.getUser());
-
-            StoreService storeService = new StoreService(storeRepository);
+            StoreService storeService = new StoreService(storeRepository, categoryRepository);
             storeService.createStore(storeRequestDto, userDetails.getUser());
         }
 
@@ -65,10 +70,16 @@ class StoreServiceTest {
             storeRequestDto.setAddress("서울시 광진구");
             storeRequestDto.setName("시옌");
 
-            Store store = new Store(storeRequestDto, userDetails.getUser());
+            StoreService storeService = new StoreService(storeRepository, categoryRepository);
 
-            StoreService storeService = new StoreService(storeRepository);
-            storeService.createStore(storeRequestDto, userDetails.getUser());
+            Exception exception = assertThrows(IllegalArgumentException.class, ()-> {
+                storeService.createStore(storeRequestDto, userDetails.getUser());
+            });
+
+            assertEquals(
+                    "존재하지 않는 카테고리입니다.",
+                    exception.getMessage()
+            );
         }
     }
 }

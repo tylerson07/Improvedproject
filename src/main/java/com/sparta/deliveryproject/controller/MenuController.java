@@ -1,11 +1,9 @@
 package com.sparta.deliveryproject.controller;
 
 import com.sparta.deliveryproject.dto.*;
-import com.sparta.deliveryproject.entity.CategoryEnum;
 import com.sparta.deliveryproject.exception.DuplicatedMenuException;
 import com.sparta.deliveryproject.security.UserDetailsImpl;
 import com.sparta.deliveryproject.service.MenuService;
-import com.sparta.deliveryproject.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
