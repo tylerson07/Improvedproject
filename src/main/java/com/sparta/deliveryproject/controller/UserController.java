@@ -19,6 +19,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 @Controller
 @RequestMapping("/api")
 @RestController
@@ -38,25 +41,15 @@ public class UserController {
 
         }
 
-        @PostMapping("/user/login")
-        public String login(@RequestBody LoginRequestDto requestDto, HttpServletResponse res){
-            try {
-                userService.login(requestDto,res);
-            } catch (Exception e) {
-                return "로그인 실패";
-            }
 
-            return "로그인 완료";
+@Secured("ROLE_ENTRE")
+    @GetMapping("/user/test")
+    public String signups(){
 
-        }
 
-@Secured("ENTRE")
-    @GetMapping(path ="/entre")
-    public String Hello(){
-        return "hello";
+        return "test";
 
-        }
-
+    }
 
 
 

@@ -62,26 +62,8 @@ private final JwtUtil jwtUtil;
         userRepository.save(user);
     }
 
-   public void login(LoginRequestDto requestDto, HttpServletResponse res) {
-         String username = requestDto.getUsername();
-         String password = requestDto.getPassword();
-logger.info(username);
-        logger.info(password);
 
-         User user = userRepository.findByUsername(username).orElseThrow(
-                 () -> new IllegalArgumentException("등록된 사용자가 없습니다")
-
-         );
-       UserRoleEnum role = user.getRole();
-
-         if(!passwordEncoder.matches(password,user.getPassword())){
-             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-
-         }
-         String token = jwtUtil.createToken(user.getUsername(),role);
-        jwtUtil.addJwtToCookie(token, res);
-
-    }
 
 
 }
+//a
