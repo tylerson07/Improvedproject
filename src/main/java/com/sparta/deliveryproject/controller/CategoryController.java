@@ -24,21 +24,21 @@ public class CategoryController {
         return ResponseEntity.status(200).body(categoryResponseDtoList);
     }
 
-    @Secured("ROLE_ENTRE")
+    @Secured("ROLE_ADMIN")
     @PostMapping()
     public ResponseEntity<CommonResponseDto> createCategory(@RequestBody CategoryRequestDto categoryRequestDto){
         categoryService.createCategory(categoryRequestDto);
         return ResponseEntity.status(200).body(new CommonResponseDto(200, "카테고리 등록 성공"));
     }
 
-    @Secured("ROLE_ENTRE")
+    @Secured("ROLE_ADMIN")
     @PutMapping("/{category_id}")
     public ResponseEntity<CommonResponseDto> editCategory(@RequestBody CategoryRequestDto categoryRequestDto, @PathVariable Long category_id){
         categoryService.editCategory(categoryRequestDto, category_id);
         return ResponseEntity.status(200).body(new CommonResponseDto(200, "카테고리 수정 성공"));
     }
 
-    @Secured("ROLE_ENTRE")
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/{category_id}")
     public ResponseEntity<CommonResponseDto> deleteCategory(@PathVariable Long category_id){
         categoryService.deleteCategory(category_id);

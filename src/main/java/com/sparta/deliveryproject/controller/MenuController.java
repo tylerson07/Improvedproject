@@ -24,21 +24,21 @@ public class MenuController {
         return ResponseEntity.status(200).body(menuList);
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured("ROLE_ENTRE")
     @PostMapping("/{storeId}")
     public ResponseEntity<CommonResponseDto> createMenu(@PathVariable Long storeId, @RequestBody MenuRequestDto menuRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws DuplicatedMenuException {
         menuService.createMenu(storeId, menuRequestDto, userDetails.getUser());
         return ResponseEntity.status(200).body(new CommonResponseDto(200, "메뉴 등록 성공"));
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured("ROLE_ENTRE")
     @PutMapping("/{menuId}")
     public ResponseEntity<CommonResponseDto> editMenu(@PathVariable Long menuId, @RequestBody MenuRequestDto menuRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws DuplicatedMenuException {
         menuService.editMenu(menuId, menuRequestDto, userDetails.getUser());
         return ResponseEntity.status(200).body(new CommonResponseDto(200, "메뉴 수정 성공"));
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured("ROLE_ENTRE")
     @DeleteMapping("/{menuId}")
     public ResponseEntity<CommonResponseDto> deleteStore(@PathVariable Long menuId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         menuService.deleteMenu(menuId, userDetails.getUser());
