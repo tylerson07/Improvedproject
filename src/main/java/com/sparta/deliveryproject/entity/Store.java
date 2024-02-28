@@ -17,7 +17,7 @@ public class Store {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
@@ -33,6 +33,13 @@ public class Store {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @Column(nullable = false)
+    private Long orderCount = 0L;
+
+    @Column(nullable = false)
+    private Long totalSales = 0L;
+
 
     public Store(StoreRequestDto storeRequestDto) {
         this.name = storeRequestDto.getName();
@@ -54,5 +61,9 @@ public class Store {
         this.address = storeRequestDto.getAddress();
         this.introduce = storeRequestDto.getIntroduce();
         this.category = CategoryEnum.valueOf(storeRequestDto.getCategory());
+    }
+    public void incrementSales(Long totalPrice){
+        this.orderCount ++;
+        this.totalSales += totalPrice;
     }
 }
