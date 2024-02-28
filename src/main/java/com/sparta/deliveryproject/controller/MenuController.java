@@ -25,6 +25,20 @@ public class MenuController {
     }
 
     @Secured("ROLE_ENTRE")
+    @GetMapping("/{storeId}/sales")
+    public ResponseEntity<List<MenuResponseDto>> getTopThreeSalesMenuListByStore(@PathVariable Long storeId) {
+        List<MenuResponseDto> menuList = menuService.getTopThreeSalesMenuListByStore(storeId);
+        return ResponseEntity.status(200).body(menuList);
+    }
+
+    @Secured("ROLE_ENTRE")
+    @GetMapping("/{storeId}/counts")
+    public ResponseEntity<List<MenuResponseDto>> getTopThreeCountsMenuListByStore(@PathVariable Long storeId) {
+        List<MenuResponseDto> menuList = menuService.getTopThreeCountsMenuListByStore(storeId);
+        return ResponseEntity.status(200).body(menuList);
+    }
+
+    @Secured("ROLE_ENTRE")
     @PostMapping("/{storeId}")
     public ResponseEntity<CommonResponseDto> createMenu(@PathVariable Long storeId, @RequestBody MenuRequestDto menuRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws DuplicatedMenuException {
         menuService.createMenu(storeId, menuRequestDto, userDetails.getUser());
