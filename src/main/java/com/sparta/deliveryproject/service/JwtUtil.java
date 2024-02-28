@@ -114,7 +114,10 @@ public class JwtUtil {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(AUTHORIZATION_HEADER)) {
                     try {
-                        return URLDecoder.decode(cookie.getValue(), "UTF-8"); // Encode 되어 넘어간 Value 다시 Decode
+                        String decodedCookieValue = URLDecoder.decode(cookie.getValue(), "UTF-8");
+                        decodedCookieValue = decodedCookieValue.substring(7);
+                        return  decodedCookieValue;
+//                        return URLDecoder.decode(cookie.getValue(), "UTF-8"); // Encode 되어 넘어간 Value 다시 Decode
                     } catch (UnsupportedEncodingException e) {
                         return null;
                     }
