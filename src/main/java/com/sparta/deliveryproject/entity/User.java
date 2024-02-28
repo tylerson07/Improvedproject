@@ -30,7 +30,14 @@ public class User implements UserDetails {
     private String password;
     @Column
     private String address;
+    @Column
+    private Long orderCount = 0L;
+    @Column
+    private Long totalSpent = 0L;
 
+    @Column
+    @Enumerated(value = EnumType.STRING)
+    private UserRankEnum grade = UserRankEnum.COMMON;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -68,5 +75,21 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void incrementSales(Long totalPrice) {
+        this.orderCount++;
+        this.totalSpent += totalPrice;
+        updateUserRank();
+    }
+
+    private void updateUserRank() {
+        if(this.orderCount >= 30 || this.totalSpent >= 300000){
+            this.grade = UserRankEnum.VVIP;
+        }else if(this.orderCount >= 10 || this.totalSpent >= 100000){
+            this.grade = UserRankEnum.VIP;
+        }else{
+            this.grade = UserRankEnum.COMMON;
+        }
     }
 }
