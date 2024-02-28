@@ -26,6 +26,12 @@ public class Menu {
     @Column(nullable = false)
     private String introduce;
 
+    @Column(nullable = false)
+    private Long salesCount = 0L;
+
+    @Column(nullable = false)
+    private Long totalSales = 0L;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
@@ -41,5 +47,10 @@ public class Menu {
         this.name = menuRequestDto.getName();
         this.price = menuRequestDto.getPrice();
         this.introduce = menuRequestDto.getIntroduce();
+    }
+
+    public void incrementSales(Long quantity){
+        this.salesCount += quantity;
+        this.totalSales += this.price * quantity;
     }
 }

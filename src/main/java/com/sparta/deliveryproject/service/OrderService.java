@@ -4,9 +4,11 @@ import com.sparta.deliveryproject.dto.OrderRequestDto;
 import com.sparta.deliveryproject.dto.OrderResponseDto;
 import com.sparta.deliveryproject.entity.Menu;
 import com.sparta.deliveryproject.entity.Orders;
+import com.sparta.deliveryproject.entity.Store;
 import com.sparta.deliveryproject.entity.User;
 import com.sparta.deliveryproject.repository.MenuRepository;
 import com.sparta.deliveryproject.repository.OrderRepository;
+import com.sparta.deliveryproject.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,7 @@ import java.util.List;
 public class OrderService {
     private final MenuRepository menuRepository;
     private final OrderRepository orderRepository;
+    private final StoreRepository storeRepository;
 
     @Transactional
     public void createOrders(Long menuId, OrderRequestDto requestDto, User user) {
@@ -63,5 +66,18 @@ public class OrderService {
     @Transactional
     public void clearOrders(User user) {
         orderRepository.deleteByUserUserID(user.getUserID());
+    }
+
+    @Transactional
+    public void purchaseOrders(User user) {
+        List<Orders> ordersList = orderRepository.findByUserUserID(user.getUserID());
+        for (Orders orders : ordersList) {
+            Menu menu = menuRepository.findById(orders.getMenu().getId()).orElseThrow();
+            menu.incrementSales(orders.getQuantity());
+
+            Store store = storeRepository.findById(menu.getStore().getId()).orElseThrow();
+            store.incrementSales(menu.getPrice() * orders.getQuantity());
+        }
+        clearOrders(user);
     }
 }

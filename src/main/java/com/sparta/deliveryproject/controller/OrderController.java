@@ -55,4 +55,10 @@ public class OrderController {
         orderService.clearOrders(userDetails.getUser());
         return ResponseEntity.status(200).body(new CommonResponseDto(200, "장바구니 비우기 성공"));
     }
+
+    @GetMapping("/purchase")
+    public ResponseEntity<CommonResponseDto> purchaseOrders(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        orderService.purchaseOrders(userDetails.getUser());
+        return ResponseEntity.status(200).body(new CommonResponseDto(200, "장바구니 메뉴 구매 성공"));
+    }
 }
