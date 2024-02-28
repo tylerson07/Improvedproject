@@ -27,6 +27,20 @@ public class StoreController {
         return ResponseEntity.status(200).body(storeList);
     }
 
+    @Secured("ROLE_ENTRE")
+    @GetMapping("entre/sales")
+    public ResponseEntity<List<StoreResponseDto>> getTopSalesStoreList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<StoreResponseDto> storeList = storeService.getTopSalesStoreList(userDetails.getUser());
+        return ResponseEntity.status(200).body(storeList);
+    }
+
+    @Secured("ROLE_ENTRE")
+    @GetMapping("entre/count")
+    public ResponseEntity<List<StoreResponseDto>> getTopCountStoreList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<StoreResponseDto> storeList = storeService.getTopCountStoreList(userDetails.getUser());
+        return ResponseEntity.status(200).body(storeList);
+    }
+
     // 매장 등록
     @Secured("ROLE_ENTRE")
     @PostMapping()

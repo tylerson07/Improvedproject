@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,6 +35,42 @@ public class StoreService {
         return storeList.stream()
                 .map(StoreResponseDto::new)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<StoreResponseDto> getTopCountStoreList(User user) {
+        List<Store> storeList = storeRepository.findAllByUserOrderByTotalSalesDesc(user);
+        if (storeList.isEmpty()) {
+            throw new IllegalArgumentException("아직 매장이 없습니다..");
+        } else if (storeList.size() <= 3) {
+            return storeList.stream()
+                    .map(StoreResponseDto::new)
+                    .toList();
+        } else {
+            List<StoreResponseDto> returnValue = new ArrayList<>();
+            for (int i = 0; i < 3; i++) {
+                returnValue.add(new StoreResponseDto(storeList.get(i)));
+            }
+            return returnValue;
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public List<StoreResponseDto> getTopSalesStoreList(User user) {
+        List<Store> storeList = storeRepository.findAllByUserOrderByOrderCountDesc(user);
+        if (storeList.isEmpty()) {
+            throw new IllegalArgumentException("아직 매장이 없습니다.");
+        } else if (storeList.size() <= 3) {
+            return storeList.stream()
+                    .map(StoreResponseDto::new)
+                    .toList();
+        } else {
+            List<StoreResponseDto> returnValue = new ArrayList<>();
+            for (int i = 0; i < 3; i++) {
+                returnValue.add(new StoreResponseDto(storeList.get(i)));
+            }
+            return returnValue;
+        }
     }
 
     public void createStore(StoreRequestDto storeRequestDto, User user) {
