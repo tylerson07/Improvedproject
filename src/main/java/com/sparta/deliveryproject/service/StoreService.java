@@ -40,10 +40,6 @@ public class StoreService {
             throw new NotValidCategoryException("존재하지 않는 카테고리입니다.");
         }
 
-        if (!user.getRole().equals(UserRoleEnum.USER)) {
-            throw new IllegalArgumentException("매장권한이 있어야 매장을 생성할 수 있습니다.");
-        }
-
         Store store = new Store(storeRequestDto, user);
         storeRepository.save(store);
     }

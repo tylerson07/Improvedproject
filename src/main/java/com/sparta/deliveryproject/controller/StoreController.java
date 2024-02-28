@@ -22,14 +22,14 @@ public class StoreController {
     private final StoreService storeService;
 
     // 카테고리별 메장 조회
-    @GetMapping("/{category}")
+    @GetMapping("category/{category}")
     public ResponseEntity<List<StoreResponseDto>> getStoreListByCategory(@PathVariable CategoryEnum category) {
         List<StoreResponseDto> storeList = storeService.getStoreListByCategory(category);
         return ResponseEntity.status(200).body(storeList);
     }
 
     // 매장 등록
-    @Secured("ADMIN")
+    @Secured("ROLE_ADMIN")
     @PostMapping()
     public ResponseEntity<CommonResponseDto> createStore(@RequestBody StoreRequestDto storeRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         storeService.createStore(storeRequestDto, userDetails.getUser());
@@ -37,7 +37,7 @@ public class StoreController {
     }
 
     // 매장 수정
-    @Secured("ADMIN")
+    @Secured("ROLE_ADMIN")
     @PutMapping("/{storeId}")
     public ResponseEntity<CommonResponseDto> editStore(@PathVariable Long storeId, @RequestBody StoreRequestDto storeRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         storeService.editStore(storeId, storeRequestDto, userDetails.getUser());
@@ -45,7 +45,7 @@ public class StoreController {
     }
 
     // 매장 삭제
-    @Secured("ADMIN")
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/{storeId}")
     public ResponseEntity<CommonResponseDto> deleteStore(@PathVariable Long storeId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         storeService.deleteStore(storeId, userDetails.getUser());

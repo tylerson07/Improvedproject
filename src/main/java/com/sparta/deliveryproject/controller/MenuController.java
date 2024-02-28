@@ -20,25 +20,27 @@ import java.util.List;
 public class MenuController {
     private final MenuService menuService;
 
-    @Secured("ENTRE")
-    @GetMapping("/{storeId}")
+    @GetMapping("/store_id/{storeId}")
     public ResponseEntity<List<MenuResponseDto>> getMenuListByStore(@PathVariable Long storeId) {
         List<MenuResponseDto> menuList = menuService.getMenuListByStore(storeId);
         return ResponseEntity.status(200).body(menuList);
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("/{storeId}")
     public ResponseEntity<CommonResponseDto> createMenu(@PathVariable Long storeId, @RequestBody MenuRequestDto menuRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws DuplicatedMenuException {
         menuService.createMenu(storeId, menuRequestDto, userDetails.getUser());
         return ResponseEntity.status(200).body(new CommonResponseDto(200, "메뉴 등록 성공"));
     }
 
+    @Secured("ROLE_ADMIN")
     @PutMapping("/{menuId}")
     public ResponseEntity<CommonResponseDto> editMenu(@PathVariable Long menuId, @RequestBody MenuRequestDto menuRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws DuplicatedMenuException {
         menuService.editMenu(menuId, menuRequestDto, userDetails.getUser());
         return ResponseEntity.status(200).body(new CommonResponseDto(200, "메뉴 수정 성공"));
     }
 
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/{menuId}")
     public ResponseEntity<CommonResponseDto> deleteStore(@PathVariable Long menuId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         menuService.deleteMenu(menuId, userDetails.getUser());
