@@ -1,6 +1,5 @@
 package com.sparta.deliveryproject.dto;
 
-import com.sparta.deliveryproject.entity.CategoryEnum;
 import com.sparta.deliveryproject.entity.Store;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,11 +9,11 @@ import lombok.NoArgsConstructor;
 public class StoreResponseDto {
     private String name;
     private String address;
-    private CategoryEnum category;
+    private String categoryName;
 
     public StoreResponseDto(Store store) {
         this.name = store.getName();
         this.address = store.getAddress();
-        this.category = store.getCategory();
+        this.categoryName = store.getCategory().getName();
     }
 }

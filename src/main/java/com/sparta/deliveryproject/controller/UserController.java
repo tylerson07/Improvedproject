@@ -5,7 +5,10 @@ import com.sparta.deliveryproject.dto.CommonResponseDto;
 import com.sparta.deliveryproject.dto.LoginRequestDto;
 import com.sparta.deliveryproject.dto.SignupRequestDto;
 import com.sparta.deliveryproject.dto.UserResponseDto;
+import com.sparta.deliveryproject.entity.User;
 import com.sparta.deliveryproject.entity.UserRoleEnum;
+import com.sparta.deliveryproject.repository.UserRepository;
+import com.sparta.deliveryproject.security.UserDetailsImpl;
 import com.sparta.deliveryproject.security.UserDetailsServiceImpl;
 import com.sparta.deliveryproject.service.JwtUtil;
 import com.sparta.deliveryproject.service.UserService;
@@ -17,7 +20,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +30,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/api")
@@ -32,10 +38,14 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
-    public UserController(UserService userService) {
+    PasswordEncoder passwordEncoder;
+    public UserController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
+
 
     @PostMapping("/user/signup")
     public String signup(@RequestBody SignupRequestDto requestdto) {
@@ -57,6 +67,20 @@ public class UserController {
     public ResponseEntity<CommonResponseDto> deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
         return ResponseEntity.status(200).body(new CommonResponseDto(200, "유저 삭제 성공."));
+    }
+
+    @PutMapping("/user/changepass")
+    public User changePassword(@RequestBody String password, @AuthenticationPrincipal UserDetailsImpl userDetails){
+
+        String username = userDetails.getUsername();
+        String encodedPassword = passwordEncoder.encode(password);
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        User user = optionalUser.get();
+        user.changePassword(encodedPassword);
+
+        return userRepository.save(user);
+
+
     }
 
 }

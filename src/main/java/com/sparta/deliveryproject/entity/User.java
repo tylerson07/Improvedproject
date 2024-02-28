@@ -94,4 +94,9 @@ public class User implements UserDetails {
             this.grade = UserRankEnum.COMMON;
         }
     }
+
+    public void changePassword(String password){
+        this.password = password;
+
+    }
 }
