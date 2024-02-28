@@ -9,6 +9,7 @@ import com.sparta.deliveryproject.entity.User;
 import com.sparta.deliveryproject.repository.MenuRepository;
 import com.sparta.deliveryproject.repository.OrderRepository;
 import com.sparta.deliveryproject.repository.StoreRepository;
+import com.sparta.deliveryproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ public class OrderService {
     private final MenuRepository menuRepository;
     private final OrderRepository orderRepository;
     private final StoreRepository storeRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public void createOrders(Long menuId, OrderRequestDto requestDto, User user) {
@@ -76,7 +78,9 @@ public class OrderService {
             menu.incrementSales(orders.getQuantity());
 
             Store store = storeRepository.findById(menu.getStore().getId()).orElseThrow();
-            store.incrementSales(menu.getPrice() * orders.getQuantity());
+            store.incrementSales(orders.getTotalPrice());
+
+            user.incrementSales(orders.getTotalPrice());
         }
         clearOrders(user);
     }
