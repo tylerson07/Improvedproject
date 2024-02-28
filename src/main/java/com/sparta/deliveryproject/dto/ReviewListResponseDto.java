@@ -19,6 +19,4 @@ public class ReviewListResponseDto {
      this.id = menu.getId();
      this.reviewList = reviewList;
       }
-
-
 }
