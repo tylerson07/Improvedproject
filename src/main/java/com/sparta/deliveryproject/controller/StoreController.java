@@ -27,7 +27,7 @@ public class StoreController {
     }
 
     // 매장 등록
-    @Secured("ADMIN")
+    @Secured("ROLE_ADMIN")
     @PostMapping()
     public ResponseEntity<CommonResponseDto> createStore(@RequestBody StoreRequestDto storeRequestDto) {
         storeService.createStore(storeRequestDto);
@@ -35,7 +35,7 @@ public class StoreController {
     }
 
     // 매장 수정
-    @Secured("ADMIN")
+    @Secured("ROLE_ADMIN")
     @PutMapping("/{storeId}")
     public ResponseEntity<CommonResponseDto> editStore(@PathVariable Long storeId, @RequestBody StoreRequestDto storeRequestDto) {
         storeService.editStore(storeId, storeRequestDto);
@@ -43,7 +43,7 @@ public class StoreController {
     }
 
     // 매장 삭제
-    @Secured("ADMIN")
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/{storeId}")
     public ResponseEntity<CommonResponseDto> deleteStore(@PathVariable Long storeId) {
         storeService.deleteStore(storeId);
